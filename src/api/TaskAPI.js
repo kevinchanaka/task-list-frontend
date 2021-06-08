@@ -6,34 +6,52 @@ export function makeTaskAPI({request}) {
     modifyTask,
     removeTask,
   });
+
+  function tryCatchHandler(args) {
+    return (async () => {
+      try {
+        const response = await request(args);
+        return response.data;
+      } catch (error) {
+        return {error: error.response.data};
+      }
+    })();
+  }
+
   async function getTasks() {
-    const response = await request.get('/tasks');
-    return response.data;
+    return await tryCatchHandler({
+      method: 'get',
+      url: '/tasks',
+    });
   }
 
   async function getTask({id}) {
-    const response = await request.get(`/tasks/${id}`);
-    return response.data;
+    return await tryCatchHandler({
+      method: 'get',
+      url: `/tasks/${id}`,
+    });
   }
 
-  async function createTask({name, description}) {
-    const response = await request.post('/tasks', {
-      name: name,
-      description: description,
+  async function createTask(task) {
+    return await tryCatchHandler({
+      method: 'post',
+      url: '/tasks',
+      data: task,
     });
-    return response.data;
   }
 
-  async function modifyTask({id, name, description}) {
-    const response = await request.put(`/tasks/${id}`, {
-      name: name,
-      description: description,
+  async function modifyTask({id, ...task}) {
+    return await tryCatchHandler({
+      method: 'put',
+      url: `/tasks/${id}`,
+      data: {id: id, ...task},
     });
-    return response;
   }
 
   async function removeTask({id}) {
-    const response = await request.delete(`/tasks/${id}`);
-    return response;
+    return await tryCatchHandler({
+      method: 'delete',
+      url: `/tasks/${id}`,
+    });
   }
 }
