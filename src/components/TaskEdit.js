@@ -3,7 +3,7 @@ import TaskForm from './TaskForm';
 import {TaskAPI} from '../api';
 import {useHistory, useParams} from 'react-router-dom';
 
-function EditTask(props) {
+function TaskEdit(props) {
   const history = useHistory();
   const {id} = useParams();
 
@@ -22,4 +22,4 @@ function EditTask(props) {
   );
 }
 
-export default EditTask;
+export default TaskEdit;

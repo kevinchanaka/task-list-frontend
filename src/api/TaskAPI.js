@@ -13,7 +13,11 @@ export function makeTaskAPI({request}) {
         const response = await request(args);
         return response.data;
       } catch (error) {
-        return {error: error.response.data};
+        if (error.response) {
+          return {error: error.response.data};
+        }
+        console.log(error);
+        return {error: error};
       }
     })();
   }

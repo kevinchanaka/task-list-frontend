@@ -1,7 +1,7 @@
 import Header from './components/Header';
 import TaskList from './components/TaskList';
-import AddTask from './components/AddTask';
-import EditTask from './components/EditTask';
+import TaskAdd from './components/TaskAdd';
+import TaskEdit from './components/TaskEdit';
 import TaskInfo from './components/TaskInfo';
 import {
   BrowserRouter as Router,
@@ -15,8 +15,8 @@ function App() {
       <Router>
         <Header />
         <Switch>
-          <Route path="/add-task"><AddTask /></Route>
-          <Route path="/edit-task/:id"><EditTask /></Route>
+          <Route path="/add-task"><TaskAdd /></Route>
+          <Route path="/edit-task/:id"><TaskEdit /></Route>
           <Route path="/tasks/:id"><TaskInfo /></Route>
           <Route path="/"><TaskList /></Route>
         </Switch>

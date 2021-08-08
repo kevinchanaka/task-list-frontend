@@ -3,7 +3,7 @@ import TaskForm from './TaskForm';
 import {TaskAPI} from '../api';
 import {useHistory} from 'react-router-dom';
 
-function AddTask() {
+function TaskAdd() {
   const history = useHistory();
 
   async function createTask(task) {
@@ -20,4 +20,4 @@ function AddTask() {
   );
 }
 
-export default AddTask;
+export default TaskAdd;
