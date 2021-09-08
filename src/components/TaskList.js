@@ -1,16 +1,13 @@
-import {useEffect, useState} from 'react';
 import {TaskAPI} from '../api';
 import Table from 'react-bootstrap/Table';
 import {useHistory} from 'react-router-dom';
+import useDataLoader from '../hooks/useDataLoader';
+import LoadingSpinner from './LoadingSpinner';
 
 function TaskList(props) {
-  const [tasks, setTasks] = useState([]);
+  const {data, error, loaded} = useDataLoader(TaskAPI.getTasks);
+  const tasks = data;
   const history = useHistory();
-
-  useEffect(async () => {
-    const taskList = await TaskAPI.getTasks();
-    setTasks(taskList);
-  }, []);
 
   function handleClick(taskId) {
     history.push(`/tasks/${taskId}`);
@@ -27,18 +24,25 @@ function TaskList(props) {
     <div className="ml-5 mr-5">
       <br />
       <h3>Task List</h3>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {tableData}
-        </tbody>
-      </Table>
+      <LoadingSpinner loaded={loaded} error={error}>
+        {tasks.length > 0 ?
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              {tableData}
+            </tbody>
+          </Table> :
+          <p>No tasks have been added,
+            click <a href='/add-task'>here</a> to add a new task</p>
+        }
+      </LoadingSpinner>
     </div>
+
   );
 }
 

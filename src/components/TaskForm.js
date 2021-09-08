@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import taskSchema from '../schema/task';
 
 function TaskForm(props) {
   const [task, setTask] = useState(() => {
@@ -17,7 +18,7 @@ function TaskForm(props) {
   });
 
   function handleChange(event) {
-    // TODO: should do basic data validation here
+    // should do basic data validation here if required
     // e.g. prevent text from being entered into number field
     setTask((prevState) => {
       return {...prevState, [event.target.name]: event.target.value};
@@ -25,10 +26,9 @@ function TaskForm(props) {
   }
 
   async function handleOnSubmit(event) {
-    // TODO: should do more advanced data validation
-    // e.g. not exceeding max chars for task name + description
     event.preventDefault();
-    await props.onSubmit(task);
+    const {error} = taskSchema.validate(task); // data validation
+    await props.onSubmit(task, error);
   }
 
   return (

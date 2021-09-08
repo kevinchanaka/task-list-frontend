@@ -2,15 +2,20 @@ import React from 'react';
 import TaskForm from './TaskForm';
 import {TaskAPI} from '../api';
 import {useHistory, useParams} from 'react-router-dom';
+import useNotification from '../hooks/useNotification';
 
 function TaskEdit(props) {
   const history = useHistory();
   const {id} = useParams();
+  const {notificationHandler, addFailure} = useNotification();
 
-  async function modifyTask(task) {
-    const taskData = {id: id, ...task};
-    await TaskAPI.modifyTask(taskData);
-    history.push('/');
+  async function modifyTask(task, error) {
+    if (error) {
+      addFailure(error.message);
+    } else if (await notificationHandler(TaskAPI.modifyTask,
+        {id: id, ...task})) {
+      history.push('/');
+    }
   }
 
   return (
