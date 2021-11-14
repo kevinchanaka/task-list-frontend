@@ -2,7 +2,7 @@ import {useState, useEffect} from 'react';
 import useNotification from './useNotification';
 
 function useDataLoader(callback, args = {}) {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState({});
   const [error, setError] = useState({});
   const [loaded, setLoaded] = useState(false);
   const {addFailure, networkErrorMessage} = useNotification();
@@ -14,11 +14,11 @@ function useDataLoader(callback, args = {}) {
       setLoaded(true);
     } else if (fetchedData.error.message == 'Network Error') {
       setLoaded(true);
-      console.log(fetchedData.error);
       setError(networkErrorMessage);
       addFailure(networkErrorMessage);
     } else {
       setLoaded(true);
+      // TODO: Catch internal server error from app
       setError(fetchedData.error.response.data.message);
       addFailure(fetchedData.error.response.data.message);
     }

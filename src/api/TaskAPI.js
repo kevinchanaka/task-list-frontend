@@ -44,7 +44,7 @@ export function makeTaskAPI({request}) {
     return await tryCatchHandler({
       method: 'put',
       url: `/tasks/${id}`,
-      data: {id: id, ...task},
+      data: task,
     });
   }
 

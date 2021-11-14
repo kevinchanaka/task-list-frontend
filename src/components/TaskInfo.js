@@ -11,7 +11,7 @@ function TaskInfo(props) {
   const history = useHistory();
   const {notificationHandler} = useNotification();
   const {data, error, loaded} = useDataLoader(TaskAPI.getTask, {id: id});
-  const task = data;
+  const task = data.task;
 
   async function deleteTask() {
     if (await notificationHandler(TaskAPI.removeTask, {id: id})) {
@@ -32,15 +32,19 @@ function TaskInfo(props) {
       <br />
       <h3>Task Information</h3>
       <LoadingSpinner error={error} loaded={loaded}>
-        <p><span className="font-weight-bold">ID: </span>{task.id}</p>
-        <p><span className="font-weight-bold">Name: </span>{task.name}</p>
-        <p>
-          <span className="font-weight-bold">
+        {task &&
+        <React.Fragment>
+          <p><span className="font-weight-bold">ID: </span>{task.id}</p>
+          <p><span className="font-weight-bold">Name: </span>{task.name}</p>
+          <p><span className="font-weight-bold">
             Description: </span>{task.description}
-        </p>
-        <Button variant="primary" onClick={editTask}
-          className="mr-2">Edit Task</Button>
-        <Button variant="danger" onClick={deleteTask}>Delete Task</Button>
+          </p>
+          <Button variant="primary" onClick={editTask} className="mr-2">
+            Edit Task
+          </Button>
+          <Button variant="danger" onClick={deleteTask}>Delete Task</Button>
+        </React.Fragment>
+        }
       </LoadingSpinner>
     </div>
   );

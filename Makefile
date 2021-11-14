@@ -6,7 +6,7 @@ build :
 	docker build -t ${app} .
 
 app :
-	docker run --name ${app} -d ${app}
+	docker run --name ${app} -p 80:80 -d ${app}
 
 stop :
 	docker stop ${app}

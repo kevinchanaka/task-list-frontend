@@ -6,26 +6,19 @@ import LoadingSpinner from './LoadingSpinner';
 
 function TaskList(props) {
   const {data, error, loaded} = useDataLoader(TaskAPI.getTasks);
-  const tasks = data;
   const history = useHistory();
+  const tasks = data.tasks;
 
   function handleClick(taskId) {
     history.push(`/tasks/${taskId}`);
   }
-
-  const tableData = tasks.map((data) => {
-    return (<tr key={data.id} onClick={() => handleClick(data.id)}>
-      <td>{data.name}</td>
-      <td>{data.description}</td>
-    </tr>);
-  });
 
   return (
     <div className="ml-5 mr-5">
       <br />
       <h3>Task List</h3>
       <LoadingSpinner loaded={loaded} error={error}>
-        {tasks.length > 0 ?
+        {tasks && tasks.length > 0 ?
           <Table striped bordered hover>
             <thead>
               <tr>
@@ -34,7 +27,12 @@ function TaskList(props) {
               </tr>
             </thead>
             <tbody>
-              {tableData}
+              {tasks.map((data) => {
+                return (<tr key={data.id} onClick={() => handleClick(data.id)}>
+                  <td>{data.name}</td>
+                  <td>{data.description}</td>
+                </tr>);
+              })}
             </tbody>
           </Table> :
           <p>No tasks have been added,
@@ -42,7 +40,6 @@ function TaskList(props) {
         }
       </LoadingSpinner>
     </div>
-
   );
 }
 
