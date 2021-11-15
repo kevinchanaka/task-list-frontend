@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import useNotification from '../hooks/useNotification';
-import useAuth from '../hooks/useAuth';
+import {useNotification} from '../context/Notification';
+import {useAuth} from '../context/Auth';
 import {userRegisterSchema} from '../schema/user';
 import {useHistory} from 'react-router';
 import {Link} from 'react-router-dom';

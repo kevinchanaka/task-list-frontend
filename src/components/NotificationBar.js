@@ -1,4 +1,4 @@
-import useNotification from '../hooks/useNotification';
+import {useNotification} from '../context/Notification';
 import Alert from 'react-bootstrap/Alert';
 
 function NotificationBar(props) {

@@ -2,7 +2,7 @@ import React from 'react';
 import TaskForm from './TaskForm';
 import {TaskAPI} from '../api';
 import {useHistory, useParams} from 'react-router-dom';
-import useNotification from '../hooks/useNotification';
+import {useNotification} from '../context/Notification';
 
 function TaskEdit(props) {
   const history = useHistory();

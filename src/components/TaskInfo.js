@@ -4,7 +4,7 @@ import {TaskAPI} from '../api';
 import Button from 'react-bootstrap/Button';
 import useDataLoader from '../hooks/useDataLoader';
 import LoadingSpinner from './LoadingSpinner';
-import useNotification from '../hooks/useNotification';
+import {useNotification} from '../context/Notification';
 
 function TaskInfo(props) {
   const {id} = useParams();

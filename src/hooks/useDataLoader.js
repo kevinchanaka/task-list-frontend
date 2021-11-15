@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react';
-import useNotification from './useNotification';
+import {useNotification} from '../context/Notification';
 
 function useDataLoader(callback, args = {}) {
   const [data, setData] = useState({});

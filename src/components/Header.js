@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
-import useAuth from '../hooks/useAuth';
+import {useAuth} from '../context/Auth';
 
 function Header() {
   const {isLoggedIn, logoutUser} = useAuth();
