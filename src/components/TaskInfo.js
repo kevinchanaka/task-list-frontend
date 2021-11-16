@@ -32,7 +32,7 @@ function TaskInfo(props) {
       <br />
       <h3>Task Information</h3>
       <LoadingSpinner error={error} loaded={loaded}>
-        {task &&
+        {task && Object.keys(task).length > 0 &&
         <React.Fragment>
           <p><span className="font-weight-bold">ID: </span>{task.id}</p>
           <p><span className="font-weight-bold">Name: </span>{task.name}</p>

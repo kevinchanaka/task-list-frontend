@@ -1,3 +1,4 @@
+import React from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 
 const crossStyle = {
@@ -11,7 +12,7 @@ function LoadingSpinner(props) {
   } else if (Object.keys(props.error).length != 0) {
     return <i className="bi bi-x-lg" style={crossStyle}></i>;
   } else {
-    return (props.children);
+    return <React.Fragment>{props.children}</React.Fragment>;
   }
 }
 
