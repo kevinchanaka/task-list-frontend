@@ -1,4 +1,4 @@
-export function makeTaskAPI({request}) {
+export function makeTaskAPI(request) {
   return Object.freeze({
     getTasks,
     getTask,

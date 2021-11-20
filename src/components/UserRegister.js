@@ -4,8 +4,7 @@ import Button from 'react-bootstrap/Button';
 import {useNotification} from '../context/Notification';
 import {useAuth} from '../context/Auth';
 import {userRegisterSchema} from '../schema/user';
-import {useHistory} from 'react-router';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 
 function UserRegister(props) {
   const [credentials, setCredentials] = useState(() => {

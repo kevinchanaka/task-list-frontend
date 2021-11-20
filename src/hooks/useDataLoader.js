@@ -7,21 +7,35 @@ function useDataLoader(callback, args = {}) {
   const [loaded, setLoaded] = useState(false);
   const {addFailure, networkErrorMessage} = useNotification();
 
-  useEffect(async () => {
-    const fetchedData = await callback(args);
-    if (!fetchedData.error) {
-      setData(fetchedData);
-      setLoaded(true);
-    } else if (fetchedData.error.message == 'Network Error') {
-      setLoaded(true);
-      setError(networkErrorMessage);
-      addFailure(networkErrorMessage);
-    } else {
-      setLoaded(true);
-      // TODO: Catch internal server error from app
-      setError(fetchedData.error.response.data.message);
-      addFailure(fetchedData.error.response.data.message);
-    }
+  useEffect(() => {
+    let isMounted = true;
+    (async () => {
+      const res = await callback(args);
+      if (isMounted && res) {
+        if (!res.error) {
+          setData(res);
+          setLoaded(true);
+        } else if (res.error.message == 'Network Error') {
+          setError(networkErrorMessage);
+          addFailure(networkErrorMessage);
+          setLoaded(true);
+        } else if (res.error && res.error.response) {
+          if (res.error.response.status != 401) {
+            setError(res.error.response.data.message);
+            addFailure(res.error.response.data.message);
+          }
+          setLoaded(true);
+        } else {
+          setLoaded(true);
+          setError('An unknown error occurred');
+          addFailure('An unknown error occurred');
+        }
+      }
+    })();
+
+    return function() {
+      isMounted = false;
+    };
   }, []);
 
   return Object.freeze({

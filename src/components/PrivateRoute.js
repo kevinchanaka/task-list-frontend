@@ -1,10 +1,9 @@
 import {useAuth} from '../context/Auth';
 import React from 'react';
-import {Redirect, Route} from 'react-router';
+import {Redirect, Route} from 'react-router-dom';
 
 function PrivateRoute({children, ...rest}) {
   const {isLoggedIn} = useAuth();
-
   return (
     <React.Fragment>
       {isLoggedIn() ?

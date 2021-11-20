@@ -1,6 +1,6 @@
 import {useAuth} from '../context/Auth';
 import React from 'react';
-import {Redirect, Route} from 'react-router';
+import {Redirect, Route} from 'react-router-dom';
 
 function PublicRoute({children, ...rest}) {
   const {isLoggedIn} = useAuth();

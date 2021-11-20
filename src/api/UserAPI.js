@@ -1,4 +1,4 @@
-export function makeUserAPI({request}) {
+export function makeUserAPI(request) {
   return Object.freeze({
     registerUser,
     loginUser,
@@ -33,23 +33,17 @@ export function makeUserAPI({request}) {
     });
   }
 
-  async function logoutUser(refreshToken) {
+  async function logoutUser() {
     return await tryCatchHandler({
       method: 'post',
       url: '/users/logout',
-      data: {
-        token: refreshToken,
-      },
     });
   }
 
-  async function getAccessToken(refreshToken) {
+  async function getAccessToken() {
     return await tryCatchHandler({
       method: 'post',
       url: '/users/token',
-      data: {
-        token: refreshToken,
-      },
     });
   }
 }

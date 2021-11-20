@@ -2,8 +2,7 @@ import React, {useState} from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import {useAuth} from '../context/Auth';
-import {useHistory} from 'react-router';
-import {Link} from 'react-router-dom';
+import {Link, useHistory} from 'react-router-dom';
 import {useNotification} from '../context/Notification';
 import {userLoginSchema} from '../schema/user';
 
@@ -35,6 +34,7 @@ function UserLogin(props) {
     if (res) {
       history.push('/');
     } else {
+      // TODO: need to fix error message here
       addFailure('Incorrect username or password');
     }
   }

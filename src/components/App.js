@@ -18,8 +18,8 @@ import {
 
 function App() {
   return (
-    <AuthProvider>
-      <NotificationProvider>
+    <NotificationProvider>
+      <AuthProvider>
         <Router>
           <Header />
           <NotificationBar />
@@ -32,9 +32,8 @@ function App() {
             <PrivateRoute path="/"><TaskList /></PrivateRoute>
           </Switch>
         </Router>
-      </NotificationProvider>
-    </AuthProvider>
-
+      </AuthProvider>
+    </NotificationProvider>
   );
 }
 
