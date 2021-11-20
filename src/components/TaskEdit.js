@@ -1,5 +1,5 @@
 import React from 'react';
-import TaskForm from './TaskForm';
+import TaskForm from '../forms/TaskForm';
 import {TaskAPI} from '../api';
 import {useHistory, useParams} from 'react-router-dom';
 import {useNotification} from '../context/Notification';
@@ -7,12 +7,10 @@ import {useNotification} from '../context/Notification';
 function TaskEdit(props) {
   const history = useHistory();
   const {id} = useParams();
-  const {notificationHandler, addFailure} = useNotification();
+  const {notificationHandler} = useNotification();
 
-  async function modifyTask(task, error) {
-    if (error) {
-      addFailure(error.message);
-    } else if (await notificationHandler(TaskAPI.modifyTask,
+  async function modifyTask(task) {
+    if (await notificationHandler(TaskAPI.modifyTask,
         {id: id, ...task})) {
       history.push('/');
     }

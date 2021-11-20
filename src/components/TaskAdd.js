@@ -1,17 +1,15 @@
 import React from 'react';
-import TaskForm from './TaskForm';
+import TaskForm from '../forms/TaskForm';
 import {TaskAPI} from '../api';
 import {useHistory} from 'react-router-dom';
 import {useNotification} from '../context/Notification';
 
 function TaskAdd() {
   const history = useHistory();
-  const {notificationHandler, addFailure} = useNotification();
+  const {notificationHandler} = useNotification();
 
-  async function createTask(task, error) {
-    if (error) {
-      addFailure(error.message);
-    } else if (await notificationHandler(TaskAPI.createTask, task)) {
+  async function createTask(task) {
+    if (await notificationHandler(TaskAPI.createTask, task)) {
       history.push('/');
     }
   }

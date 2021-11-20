@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import taskSchema from '../schema/task';
+import {useNotification} from '../context/Notification';
 
 function TaskForm(props) {
   const [task, setTask] = useState(() => {
@@ -16,6 +17,7 @@ function TaskForm(props) {
     }
     return taskData;
   });
+  const {addFailure} = useNotification();
 
   function handleChange(event) {
     // should do basic data validation here if required
@@ -27,8 +29,12 @@ function TaskForm(props) {
 
   async function handleOnSubmit(event) {
     event.preventDefault();
-    const {error} = taskSchema.validate(task); // data validation
-    await props.onSubmit(task, error);
+    const {error} = taskSchema.validate(task);
+    if (error) {
+      addFailure(error.message);
+    } else {
+      await props.onSubmit(task);
+    }
   }
 
   return (

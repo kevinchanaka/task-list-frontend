@@ -13,14 +13,15 @@ function AuthProvider(props) {
   const [user, setUser] = useLocalStorage('user', {});
   const accessToken = useRef('');
   const {addFailure} = useNotification();
-
   useEffect(() => {
     /* setting up axios interceptors, these are used
       to obtain new JWT access tokens via refresh tokens */
+    if (!isLoggedIn()) {
+      return;
+    }
+
     const reqIntercept = request.interceptors.request.use(function(config) {
-      if (isLoggedIn()) {
-        config.headers['Authorization'] = 'Bearer ' + accessToken.current;
-      }
+      config.headers['Authorization'] = 'Bearer ' + accessToken.current;
       return config;
     }, function(error) {
       Promise.reject(error);
@@ -46,6 +47,9 @@ function AuthProvider(props) {
     });
 
     return function() {
+      if (!isLoggedIn()) {
+        return;
+      }
       request.interceptors.request.eject(reqIntercept);
       request.interceptors.response.eject(resIntercept);
     };
