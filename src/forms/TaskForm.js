@@ -38,21 +38,24 @@ function TaskForm(props) {
   }
 
   return (
-    <Form onSubmit={handleOnSubmit}>
-      <Form.Group controlId="name">
-        <Form.Label>Name</Form.Label>
-        <Form.Control type="text" name="name" placeholder="Name"
-          value={task.name} onChange={handleChange}/>
-      </Form.Group>
-      <Form.Group controlId="description">
-        <Form.Label>Description</Form.Label>
-        <Form.Control as="textarea" name="description" placeholder="Description"
-          value={task.description} onChange={handleChange} />
-      </Form.Group>
-      <Button variant="primary" type="submit">
+    <div style={{maxWidth: '768px'}}>
+      <Form onSubmit={handleOnSubmit}>
+        <Form.Group controlId="name">
+          <Form.Label>Name</Form.Label>
+          <Form.Control type="text" name="name" placeholder="Name"
+            value={task.name} autoComplete="off" onChange={handleChange} />
+        </Form.Group>
+        <Form.Group controlId="description">
+          <Form.Label>Description</Form.Label>
+          <Form.Control as="textarea" name="description"
+            placeholder="Description"
+            value={task.description} onChange={handleChange} />
+        </Form.Group>
+        <Button variant="primary" type="submit">
         Submit
-      </Button>
-    </Form>
+        </Button>
+      </Form>
+    </div>
   );
 }
 

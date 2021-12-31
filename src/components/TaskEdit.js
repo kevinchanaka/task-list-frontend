@@ -17,8 +17,7 @@ function TaskEdit(props) {
   }
 
   return (
-    <div className="ml-5 mr-5">
-      <br />
+    <div className="ml-5 mr-5 mt-3">
       <h3>Edit Task</h3>
       <TaskForm task={history.location.state} onSubmit={modifyTask} />
     </div>

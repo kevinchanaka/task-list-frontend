@@ -1,42 +1,30 @@
 import {TaskAPI} from '../api';
-import Table from 'react-bootstrap/Table';
-import {useHistory} from 'react-router-dom';
+import Row from 'react-bootstrap/Row';
+import {Link} from 'react-router-dom';
 import useDataLoader from '../hooks/useDataLoader';
 import LoadingSpinner from './LoadingSpinner';
+import TaskCard from './TaskCard';
 
 function TaskList(props) {
   const {data, error, loaded} = useDataLoader(TaskAPI.getTasks);
-  const history = useHistory();
   const tasks = data.tasks;
 
-  function handleClick(taskId) {
-    history.push(`/tasks/${taskId}`);
-  }
-
   return (
-    <div className="ml-5 mr-5">
-      <br />
+    <div className="ml-5 mr-5 mt-3">
       <h3>Task List</h3>
       <LoadingSpinner loaded={loaded} error={error}>
         {tasks && tasks.length > 0 ?
-          <Table striped bordered hover>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Description</th>
-              </tr>
-            </thead>
-            <tbody>
-              {tasks.map((data) => {
-                return (<tr key={data.id} onClick={() => handleClick(data.id)}>
-                  <td>{data.name}</td>
-                  <td>{data.description}</td>
-                </tr>);
-              })}
-            </tbody>
-          </Table> :
-          <p>No tasks have been added,
-            click <a href='/add-task'>here</a> to add a new task</p>
+          <Row xs={1} md={2} className="g-4">
+            {tasks.map((data) => {
+              return (
+                <TaskCard key={data.id} task={data} />
+              );
+            })}
+          </Row> :
+          <div>
+            No tasks have been added,
+            click <Link to="/add-task">here</Link> to add a new task
+          </div>
         }
       </LoadingSpinner>
     </div>

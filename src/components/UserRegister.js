@@ -20,8 +20,7 @@ function UserRegister(props) {
   }
 
   return (
-    <div className="ml-5 mr-5">
-      <br />
+    <div className="ml-5 mr-5 mt-3">
       <h3>User Registration</h3>
       <UserRegisterForm onSubmit={userRegister}/>
     </div>

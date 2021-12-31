@@ -19,8 +19,7 @@ function UserLogin(props) {
   }
 
   return (
-    <div className="ml-5 mr-5">
-      <br />
+    <div className="ml-5 mr-5 mt-3">
       <h3>User Login</h3>
       <UserLoginForm onSubmit={userLogin} />
     </div>

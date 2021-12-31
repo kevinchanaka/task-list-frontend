@@ -43,33 +43,39 @@ function UserRegisterForm(props) {
 
   return (
     <>
-      <Form onSubmit={handleOnSubmit}>
-        <Form.Group controlId="name">
-          <Form.Label>Name</Form.Label>
-          <Form.Control type="text" name="name" placeholder="Name"
-            value={credentials.name} onChange={handleChange}/>
-        </Form.Group>
-        <Form.Group controlId="email">
-          <Form.Label>Email</Form.Label>
-          <Form.Control type="email" name="email" placeholder="Email"
-            value={credentials.email} onChange={handleChange}/>
-        </Form.Group>
-        <Form.Group controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control type="password" name="password" placeholder="Password"
-            value={credentials.password} onChange={handleChange}/>
-        </Form.Group>
-        <Form.Group controlId="passwordRepeat">
-          <Form.Label>Repeat Password</Form.Label>
-          <Form.Control type="password" name="passwordRepeat"
-            placeholder="Repeat Password" value={credentials.passwordRepeat}
-            onChange={handleChange}/>
-        </Form.Group>
-        <Button variant="primary" type="submit">
+      <div style={{maxWidth: '768px'}}>
+        <Form onSubmit={handleOnSubmit}>
+          <Form.Group controlId="name">
+            <Form.Label>Name</Form.Label>
+            <Form.Control type="text" name="name" placeholder="Name"
+              value={credentials.name} autoComplete="off"
+              onChange={handleChange}/>
+          </Form.Group>
+          <Form.Group controlId="email">
+            <Form.Label>Email</Form.Label>
+            <Form.Control type="email" name="email" placeholder="Email"
+              value={credentials.email} autoComplete="off"
+              onChange={handleChange}/>
+          </Form.Group>
+          <Form.Group controlId="password">
+            <Form.Label>Password</Form.Label>
+            <Form.Control type="password" name="password" placeholder="Password"
+              value={credentials.password} onChange={handleChange}/>
+          </Form.Group>
+          <Form.Group controlId="passwordRepeat">
+            <Form.Label>Repeat Password</Form.Label>
+            <Form.Control type="password" name="passwordRepeat"
+              placeholder="Repeat Password" value={credentials.passwordRepeat}
+              onChange={handleChange}/>
+          </Form.Group>
+          <Button variant="primary" type="submit">
         Submit
-        </Button>
-      </Form>
-      <p>Already have an account? <Link to="/login">Login</Link></p>
+          </Button>
+        </Form>
+      </div>
+      <div className="mt-2">
+          Already have an account? <Link to="/login">Login</Link>
+      </div>
     </>
   );
 }

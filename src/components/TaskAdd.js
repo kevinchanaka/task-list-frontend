@@ -15,8 +15,7 @@ function TaskAdd() {
   }
 
   return (
-    <div className="ml-5 mr-5">
-      <br />
+    <div className="ml-5 mr-5 mt-3">
       <h3>Add Task</h3>
       <TaskForm onSubmit={createTask} />
     </div>

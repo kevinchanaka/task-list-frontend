@@ -28,8 +28,7 @@ function TaskInfo(props) {
   }
 
   return (
-    <div className="ml-5 mr-5">
-      <br />
+    <div className="ml-5 mr-5 mt-3">
       <h3>Task Information</h3>
       <LoadingSpinner error={error} loaded={loaded}>
         {task && Object.keys(task).length > 0 &&
