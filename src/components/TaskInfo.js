@@ -9,13 +9,17 @@ import {useNotification} from '../context/Notification';
 function TaskInfo(props) {
   const {id} = useParams();
   const history = useHistory();
-  const {notificationHandler} = useNotification();
+  const {addSuccess, addFailure} = useNotification();
   const {data, error, loaded} = useDataLoader(TaskAPI.getTask, {id: id});
   const task = data.task;
 
   async function deleteTask() {
-    if (await notificationHandler(TaskAPI.removeTask, {id: id})) {
+    const res = await TaskAPI.removeTask({id: id});
+    if (!res.error) {
+      addSuccess(res.message);
       history.push('/');
+    } else {
+      addFailure(res.error);
     }
   }
 

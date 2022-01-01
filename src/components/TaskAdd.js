@@ -6,11 +6,15 @@ import {useNotification} from '../context/Notification';
 
 function TaskAdd() {
   const history = useHistory();
-  const {notificationHandler} = useNotification();
+  const {addSuccess, addFailure} = useNotification();
 
   async function createTask(task) {
-    if (await notificationHandler(TaskAPI.createTask, task)) {
+    const res = await TaskAPI.createTask(task);
+    if (!res.error) {
+      addSuccess(res.message);
       history.push('/');
+    } else {
+      addFailure(res.error);
     }
   }
 

@@ -1,4 +1,6 @@
-export function makeTaskAPI(request) {
+import {requestHandler} from '.';
+
+function makeTaskAPI() {
   return Object.freeze({
     getTasks,
     getTask,
@@ -7,33 +9,22 @@ export function makeTaskAPI(request) {
     removeTask,
   });
 
-  function tryCatchHandler(args) {
-    return (async () => {
-      try {
-        const response = await request(args);
-        return response.data;
-      } catch (error) {
-        return {error: error};
-      }
-    })();
-  }
-
   async function getTasks() {
-    return await tryCatchHandler({
+    return await requestHandler({
       method: 'get',
       url: '/tasks',
     });
   }
 
   async function getTask({id}) {
-    return await tryCatchHandler({
+    return await requestHandler({
       method: 'get',
       url: `/tasks/${id}`,
     });
   }
 
   async function createTask(task) {
-    return await tryCatchHandler({
+    return await requestHandler({
       method: 'post',
       url: '/tasks',
       data: task,
@@ -41,7 +32,7 @@ export function makeTaskAPI(request) {
   }
 
   async function modifyTask({id, ...task}) {
-    return await tryCatchHandler({
+    return await requestHandler({
       method: 'put',
       url: `/tasks/${id}`,
       data: task,
@@ -49,9 +40,11 @@ export function makeTaskAPI(request) {
   }
 
   async function removeTask({id}) {
-    return await tryCatchHandler({
+    return await requestHandler({
       method: 'delete',
       url: `/tasks/${id}`,
     });
   }
 }
+
+export const TaskAPI = makeTaskAPI();

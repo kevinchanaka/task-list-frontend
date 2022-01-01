@@ -7,12 +7,15 @@ import {useNotification} from '../context/Notification';
 function TaskEdit(props) {
   const history = useHistory();
   const {id} = useParams();
-  const {notificationHandler} = useNotification();
+  const {addSuccess, addFailure} = useNotification();
 
   async function modifyTask(task) {
-    if (await notificationHandler(TaskAPI.modifyTask,
-        {id: id, ...task})) {
+    const res = await TaskAPI.modifyTask({id: id, ...task});
+    if (!res.error) {
+      addSuccess(res.message);
       history.push('/');
+    } else {
+      addFailure(res.error);
     }
   }
 

@@ -1,4 +1,6 @@
-export function makeUserAPI(request) {
+import {requestHandler} from '.';
+
+function makeUserAPI() {
   return Object.freeze({
     registerUser,
     loginUser,
@@ -6,19 +8,8 @@ export function makeUserAPI(request) {
     getAccessToken,
   });
 
-  function tryCatchHandler(args) {
-    return (async () => {
-      try {
-        const response = await request(args);
-        return response.data;
-      } catch (error) {
-        return {error: error};
-      }
-    })();
-  }
-
   async function registerUser(user) {
-    return await tryCatchHandler({
+    return await requestHandler({
       method: 'post',
       url: '/users/register',
       data: user,
@@ -26,7 +17,7 @@ export function makeUserAPI(request) {
   }
 
   async function loginUser(credentials) {
-    return await tryCatchHandler({
+    return await requestHandler({
       method: 'post',
       url: '/users/login',
       data: credentials,
@@ -34,17 +25,18 @@ export function makeUserAPI(request) {
   }
 
   async function logoutUser() {
-    return await tryCatchHandler({
+    return await requestHandler({
       method: 'post',
       url: '/users/logout',
     });
   }
 
   async function getAccessToken() {
-    return await tryCatchHandler({
+    return await requestHandler({
       method: 'post',
       url: '/users/token',
     });
   }
 }
 
+export const UserAPI = makeUserAPI();
