@@ -10,11 +10,10 @@ function UserLogin(props) {
 
   async function userLogin(credentials) {
     const res = await loginUser(credentials.email, credentials.password);
-    if (res) {
+    if (!res.error) {
       history.push('/');
     } else {
-      // TODO: need to fix error message here
-      addFailure('Incorrect username or password');
+      addFailure(res.error);
     }
   }
 

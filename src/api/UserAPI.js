@@ -1,4 +1,4 @@
-import {requestHandler} from '.';
+import {requestHandler, request} from '.';
 
 function makeUserAPI() {
   return Object.freeze({
@@ -32,10 +32,7 @@ function makeUserAPI() {
   }
 
   async function getAccessToken() {
-    return await requestHandler({
-      method: 'post',
-      url: '/users/token',
-    });
+    return await request.post('/users/token');
   }
 }
 

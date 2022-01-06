@@ -11,11 +11,11 @@ function UserRegister(props) {
   async function userRegister(credentials) {
     const res = await registerUser(credentials.name, credentials.email,
         credentials.password);
-    if (res.error) {
-      addFailure(res.error.response.data.message);
-    } else {
+    if (!res.error) {
       addSuccess('User registered successfully');
       history.push('/login');
+    } else {
+      addFailure(res.error);
     }
   }
 

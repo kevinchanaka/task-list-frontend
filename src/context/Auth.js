@@ -1,6 +1,6 @@
-import {createContext, useContext, useEffect, useRef} from 'react';
+import {createContext, useContext, useEffect} from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
-import {UserAPI, getAccessToken, request} from '../api';
+import {UserAPI, request} from '../api';
 import {useNotification} from './Notification';
 
 const AuthContext = createContext();
@@ -11,56 +11,46 @@ export function useAuth() {
 
 function AuthProvider(props) {
   const [user, setUser] = useLocalStorage('user', {});
-  const accessToken = useRef('');
-  const {addFailure} = useNotification();
+  const {addSuccess, addFailure} = useNotification();
+
   useEffect(() => {
     /* setting up axios interceptors, these are used
       to obtain new JWT access tokens via refresh tokens */
-    if (!isLoggedIn()) {
-      return;
+    function initInterceptor() {
+      const interceptor = request.interceptors.response.use(function(response) {
+        return response;
+      }, async function(error) {
+        if (error.response.status != 401) {
+          return Promise.reject(error);
+        }
+        // ejecting interceptor to prevent infinite loop
+        request.interceptors.response.eject(interceptor);
+
+        // token refresh
+        let retVal;
+        try {
+          await UserAPI.getAccessToken();
+          retVal = request.request(error.config);
+        } catch (error) {
+          retVal = Promise.reject(error);
+          setUser({});
+          addFailure('Session expired, please login again');
+        }
+
+        initInterceptor(); // adding interceptor again
+        return retVal;
+      });
     }
-
-    const reqIntercept = request.interceptors.request.use(function(config) {
-      config.headers['Authorization'] = 'Bearer ' + accessToken.current;
-      return config;
-    }, function(error) {
-      Promise.reject(error);
-    });
-
-    const resIntercept = request.interceptors.response.use(function(response) {
-      return response;
-    }, async function(error) {
-      if (error.response.status != 401) {
-        return Promise.reject(error);
-      }
-      const res = await getAccessToken();
-      if (!res.error) {
-        accessToken.current = res.user.accessToken;
-        error.config.headers['Authorization'] = 'Bearer ' + accessToken.current;
-        return request(error.config);
-      }
-      request.interceptors.response.eject(resIntercept);
-      accessToken.current = '';
-      await logoutUser();
-      addFailure('Session expired, please login again');
-      return Promise.reject(error);
-    });
-
-    return function() {
-      if (!isLoggedIn()) {
-        return;
-      }
-      request.interceptors.request.eject(reqIntercept);
-      request.interceptors.response.eject(resIntercept);
-    };
-  }, [user]);
+    initInterceptor();
+  }, []);
 
   async function registerUser(name, email, password) {
-    return await UserAPI.registerUser({
+    const res = await UserAPI.registerUser({
       name: name,
       email: email,
       password: password,
     });
+    return res;
   }
 
   async function loginUser(email, password) {
@@ -69,22 +59,19 @@ function AuthProvider(props) {
       password: password,
     });
     if (!res.error) {
-      accessToken.current = res.user.accessToken;
       setUser({
         email: res.user.email,
         id: res.user.id,
         name: res.user.name,
       });
-      return true;
     }
-    return false;
+    return res;
   }
 
   async function logoutUser() {
-    if (isLoggedIn()) {
-      await UserAPI.logoutUser();
-    }
+    await UserAPI.logoutUser();
     setUser({});
+    addSuccess('Logout successful');
   }
 
   function isLoggedIn() {
