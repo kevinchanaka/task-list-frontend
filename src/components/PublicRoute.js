@@ -8,7 +8,7 @@ function PublicRoute({children, ...rest}) {
   return (
     <React.Fragment>
       {!isLoggedIn() ?
-        <Route {...rest}>{children}</Route> :
+        <Route exact {...rest}>{children}</Route> :
         <Redirect to="/"></Redirect>
       }
     </React.Fragment>

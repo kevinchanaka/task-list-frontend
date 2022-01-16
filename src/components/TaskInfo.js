@@ -39,8 +39,9 @@ function TaskInfo(props) {
         <React.Fragment>
           <p><span className="font-weight-bold">ID: </span>{task.id}</p>
           <p><span className="font-weight-bold">Name: </span>{task.name}</p>
-          <p><span className="font-weight-bold">
-            Description: </span>{task.description}
+          <p style={{whiteSpace: 'pre-wrap'}}>
+            <span className="font-weight-bold">Description: </span><br />
+            {task.description}
           </p>
           <Button variant="primary" onClick={editTask} className="mr-2">
             Edit Task

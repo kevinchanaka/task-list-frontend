@@ -7,7 +7,7 @@ function PrivateRoute({children, ...rest}) {
   return (
     <React.Fragment>
       {isLoggedIn() ?
-        <Route {...rest}>{children}</Route> :
+        <Route exact {...rest}>{children}</Route> :
         <Redirect to="/login"></Redirect>
       }
     </React.Fragment>
