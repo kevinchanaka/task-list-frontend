@@ -3,7 +3,7 @@ export let API_PATH;
 if (process.env.NODE_ENV == 'development' || process.env.NODE_ENV == 'test') {
   API_PATH = ''; // relying on proxy setting
 } else {
-  API_PATH = 'http://www.example.com/api/v1'; // placeholder
+  API_PATH = 'https://tasklist.kevinf.xyz/api/v1';
 }
 
 export const API_HEADERS = {'Content-type': 'application/json'};

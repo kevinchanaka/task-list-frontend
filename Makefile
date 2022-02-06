@@ -2,6 +2,7 @@ app=task-list-frontend
 .PHONY: build
 
 build :
+	npx browserslist@latest --update-db
 	npm run build
 	docker build -t ${app} .
 

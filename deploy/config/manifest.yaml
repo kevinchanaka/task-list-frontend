@@ -1,0 +1,82 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: task-list
+  labels:
+    elbv2.k8s.aws/pod-readiness-gate-inject: enabled
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: task-list-frontend
+  namespace: task-list
+  labels:
+    app: task-list-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: task-list-frontend
+  template:
+    metadata:
+      labels:
+        app: task-list-frontend
+    spec:
+      containers:
+      - name: task-list-frontend
+        image: ${ECR_REPOSITORY_URI}:${CODEBUILD_RESOLVED_SOURCE_VERSION}
+        ports:
+        - containerPort: 80
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "sleep 70"]
+      terminationGracePeriodSeconds: 120
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  namespace: task-list
+  name: task-list-frontend
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+  type: ClusterIP
+  selector:
+    app: task-list-frontend
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: task-list
+  name: task-list-frontend
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: '443'
+    alb.ingress.kubernetes.io/healthcheck-path: '/'
+    alb.ingress.kubernetes.io/healthcheck-interval-seconds: '30'
+    alb.ingress.kubernetes.io/target-group-attributes: deregistration_delay.timeout_seconds=60
+    alb.ingress.kubernetes.io/group.name: task-list
+spec:
+  rules:
+  - host: tasklist.kevinf.xyz
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: task-list-frontend
+            port:
+              number: 80
