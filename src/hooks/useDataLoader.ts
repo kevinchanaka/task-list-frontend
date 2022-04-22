@@ -1,22 +1,25 @@
 import {useState, useEffect} from 'react';
 import {useNotification} from '../context/Notification';
 
-function useDataLoader(callback, args = {}) {
-  const [data, setData] = useState({});
-  const [error, setError] = useState({});
+type Callback<T> = () => Promise<T | {error: string}>
+
+function useDataLoader<T>(callback: Callback<T>) {
+  const [data, setData] = useState<T>();
+  const [error, setError] = useState<string>();
   const [loaded, setLoaded] = useState(false);
   const {addFailure} = useNotification();
 
   useEffect(() => {
     let isMounted = true;
     (async () => {
-      const res = await callback(args);
+      const res = await callback();
+
       if (isMounted && res) {
-        if (!res.error) {
-          setData(res);
-        } else {
+        if ('error' in res) {
           setError(res.error);
           addFailure(res.error);
+        } else {
+          setData(res);
         }
         setLoaded(true);
       }

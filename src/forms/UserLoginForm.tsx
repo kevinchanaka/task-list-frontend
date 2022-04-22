@@ -4,8 +4,14 @@ import Button from 'react-bootstrap/Button';
 import {userLoginSchema} from '../schema/user';
 import {useNotification} from '../context/Notification';
 import {Link} from 'react-router-dom';
+import {FormControlElement} from '../interfaces';
+import {LoginUserRequest} from '../api';
 
-function UserLoginForm(props) {
+interface UserLoginFormProps {
+  onSubmit: (credentials: LoginUserRequest) => Promise<void>
+}
+
+function UserLoginForm(props: UserLoginFormProps) {
   const [credentials, setCredentials] = useState(() => {
     return {
       email: '',
@@ -14,13 +20,13 @@ function UserLoginForm(props) {
   });
   const {addFailure} = useNotification();
 
-  function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<FormControlElement>) {
     setCredentials((prevState) => {
       return {...prevState, [event.target.name]: event.target.value};
     });
   }
 
-  async function handleOnSubmit(event) {
+  async function handleOnSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const {error} = userLoginSchema.validate(credentials);
     if (error) {

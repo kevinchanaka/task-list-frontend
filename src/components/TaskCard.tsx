@@ -2,20 +2,24 @@ import Col from 'react-bootstrap/Col';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import {useHistory} from 'react-router-dom';
-import {TaskAPI} from '../api';
+import {TaskAPI, TaskWithId, Task} from '../api';
 import {useNotification} from '../context/Notification';
 
-function TaskCard(props) {
-  const history = useHistory();
+interface TaskCardProps {
+  task: TaskWithId
+}
+
+function TaskCard(props: TaskCardProps) {
+  const history = useHistory<Task>();
   const {addSuccess, addFailure} = useNotification();
 
   // TODO: should centralise logic to manage tasks
   // e.g. react custom hooks?
-  function handleInfoClick(taskId) {
+  function handleInfoClick(taskId: string) {
     history.push(`tasks/${taskId}`);
   }
 
-  function handleEditClick(task) {
+  function handleEditClick(task: TaskWithId) {
     const {id, ...state} = task;
     history.push({
       pathname: `/edit-task/${id}`,
@@ -23,16 +27,16 @@ function TaskCard(props) {
     });
   }
 
-  async function deleteTask(taskId) {
+  async function deleteTask(taskId: string) {
     const res = await TaskAPI.removeTask({id: taskId});
-    if (!res.error) {
+    if ('error' in res) {
+      addFailure(res.error);
+    } else {
       addSuccess(res.message);
       /* TODO: below code is a hacky workaround since history.push to the
          same path does not cause a re-render */
       history.push('/not-found');
       history.push('/');
-    } else {
-      addFailure(res.error);
     }
   }
 

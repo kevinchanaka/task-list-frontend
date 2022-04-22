@@ -2,27 +2,28 @@ import {useAuth} from '../context/Auth';
 import {useHistory} from 'react-router-dom';
 import {useNotification} from '../context/Notification';
 import UserRegisterForm from '../forms/UserRegisterForm';
+import {RegisterUserRequest} from '../api';
 
-function UserRegister(props) {
+function UserRegister() {
   const {addFailure, addSuccess} = useNotification();
   const {registerUser} = useAuth();
   const history = useHistory();
 
-  async function userRegister(credentials) {
+  async function handleUserRegister(credentials: RegisterUserRequest) {
     const res = await registerUser(credentials.name, credentials.email,
         credentials.password);
-    if (!res.error) {
+    if ('error' in res) {
+      addFailure(res.error);
+    } else {
       addSuccess('User registered successfully');
       history.push('/login');
-    } else {
-      addFailure(res.error);
     }
   }
 
   return (
     <div className="ml-5 mr-5 mt-3">
       <h3>User Registration</h3>
-      <UserRegisterForm onSubmit={userRegister}/>
+      <UserRegisterForm onSubmit={handleUserRegister}/>
     </div>
   );
 }

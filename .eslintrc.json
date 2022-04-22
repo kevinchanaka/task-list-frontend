@@ -5,7 +5,8 @@
     },
     "extends": [
         "google",
-        "plugin:react/recommended"
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -15,11 +16,13 @@
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "react",
+        "@typescript-eslint"
     ],
     "rules": {
         "react/react-in-jsx-scope": 0,
         "require-jsdoc": 0,
         "react/prop-types": 0
-    }
+    },
+    "ignorePatterns": ["src/react-app-env.d.ts"]
 }
