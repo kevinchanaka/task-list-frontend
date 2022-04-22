@@ -12,7 +12,7 @@ const crossStyle = {
   display: 'inline',
 };
 
-function LoadingSpinner(props: LoadingSpinnerProps) {
+function LoadingSpinner(props: LoadingSpinnerProps): JSX.Element {
   if (props.loaded == false) {
     return <Spinner animation="border" />;
   } else if (props.error && Object.keys(props.error).length != 0) {

@@ -11,7 +11,7 @@ interface UserLoginFormProps {
   onSubmit: (credentials: LoginUserRequest) => Promise<void>
 }
 
-function UserLoginForm(props: UserLoginFormProps) {
+function UserLoginForm(props: UserLoginFormProps): JSX.Element {
   const [credentials, setCredentials] = useState(() => {
     return {
       email: '',

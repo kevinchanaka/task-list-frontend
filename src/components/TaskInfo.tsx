@@ -6,7 +6,7 @@ import useDataLoader from '../hooks/useDataLoader';
 import LoadingSpinner from './LoadingSpinner';
 import {useNotification} from '../context/Notification';
 
-function TaskInfo() {
+function TaskInfo(): JSX.Element {
   const {id} = useParams<Id>();
   const history = useHistory<Task>();
   const {addSuccess, addFailure} = useNotification();

@@ -5,7 +5,7 @@ import useDataLoader from '../hooks/useDataLoader';
 import LoadingSpinner from './LoadingSpinner';
 import TaskCard from './TaskCard';
 
-function TaskList() {
+function TaskList(): JSX.Element {
   const {data, error, loaded} = useDataLoader(() => TaskAPI.getTasks());
 
   return (

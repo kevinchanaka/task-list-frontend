@@ -11,7 +11,7 @@ interface UserRegisterFormProps {
   onSubmit: (credentials: RegisterUserRequest) => Promise<void>
 }
 
-function UserRegisterForm(props: UserRegisterFormProps) {
+function UserRegisterForm(props: UserRegisterFormProps): JSX.Element {
   const [credentials, setCredentials] = useState(() => {
     return {
       name: '',

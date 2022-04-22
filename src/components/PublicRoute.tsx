@@ -6,7 +6,7 @@ interface PublicRouteProps extends RouteProps {
   children: React.ReactElement
 }
 
-function PublicRoute({children, ...rest}: PublicRouteProps) {
+function PublicRoute({children, ...rest}: PublicRouteProps): JSX.Element {
   const {isLoggedIn} = useAuth();
 
   return (

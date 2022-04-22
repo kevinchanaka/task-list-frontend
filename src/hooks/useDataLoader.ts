@@ -2,8 +2,13 @@ import {useState, useEffect} from 'react';
 import {useNotification} from '../context/Notification';
 
 type Callback<T> = () => Promise<T | {error: string}>
+type UseDataLoaderReturn<T> = Readonly<{
+  data: T | undefined,
+  error: string | undefined,
+  loaded: boolean
+}>
 
-function useDataLoader<T>(callback: Callback<T>) {
+function useDataLoader<T>(callback: Callback<T>): UseDataLoaderReturn<T> {
   const [data, setData] = useState<T>();
   const [error, setError] = useState<string>();
   const [loaded, setLoaded] = useState(false);

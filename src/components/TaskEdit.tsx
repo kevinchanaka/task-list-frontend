@@ -4,7 +4,7 @@ import {TaskAPI, Id, Task} from '../api';
 import {useHistory, useParams} from 'react-router-dom';
 import {useNotification} from '../context/Notification';
 
-function TaskEdit() {
+function TaskEdit(): JSX.Element {
   const history = useHistory<Task>();
   const {id} = useParams<Id>();
   const {addSuccess, addFailure} = useNotification();

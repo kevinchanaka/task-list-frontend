@@ -3,7 +3,7 @@ import {TaskAPI, Task} from '../api';
 import {useHistory} from 'react-router-dom';
 import {useNotification} from '../context/Notification';
 
-function TaskAdd() {
+function TaskAdd(): JSX.Element {
   const history = useHistory();
   const {addSuccess, addFailure} = useNotification();
 

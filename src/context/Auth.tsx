@@ -25,11 +25,11 @@ interface AuthContextInterface {
 
 const AuthContext = createContext({} as AuthContextInterface);
 
-export function useAuth() {
+export function useAuth(): AuthContextInterface {
   return useContext(AuthContext);
 }
 
-function AuthProvider(props: AuthProviderProps) {
+function AuthProvider(props: AuthProviderProps): JSX.Element {
   const initialValue: UserState = {email: '', id: '', name: ''};
   const [user, setUser] = useLocalStorage<UserState>('user', initialValue);
   const {addSuccess, addFailure} = useNotification();

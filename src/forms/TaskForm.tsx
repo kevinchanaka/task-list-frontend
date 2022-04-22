@@ -11,7 +11,7 @@ interface TaskFormProps {
   onSubmit: (task: Task) => Promise<void>
 }
 
-function TaskForm(props: TaskFormProps) {
+function TaskForm(props: TaskFormProps): JSX.Element {
   const [task, setTask] = useState(() => {
     let taskData;
     if (props.task) {

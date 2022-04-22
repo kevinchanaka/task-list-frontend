@@ -4,7 +4,7 @@ import {useNotification} from '../context/Notification';
 import UserLoginForm from '../forms/UserLoginForm';
 import {LoginUserRequest} from '../api';
 
-function UserLogin() {
+function UserLogin(): JSX.Element {
   const {loginUser} = useAuth();
   const {addFailure} = useNotification();
   const history = useHistory();

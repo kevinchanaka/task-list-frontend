@@ -4,7 +4,7 @@ import {useNotification} from '../context/Notification';
 import UserRegisterForm from '../forms/UserRegisterForm';
 import {RegisterUserRequest} from '../api';
 
-function UserRegister() {
+function UserRegister(): JSX.Element {
   const {addFailure, addSuccess} = useNotification();
   const {registerUser} = useAuth();
   const history = useHistory();

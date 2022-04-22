@@ -6,7 +6,7 @@ interface PrivateRouteProps extends RouteProps {
   children: React.ReactElement
 }
 
-function PrivateRoute({children, ...rest}: PrivateRouteProps) {
+function PrivateRoute({children, ...rest}: PrivateRouteProps): JSX.Element {
   const {isLoggedIn} = useAuth();
   return (
     <React.Fragment>

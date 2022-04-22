@@ -14,7 +14,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 
-export default function AppRouter() {
+export default function AppRouter(): JSX.Element {
   return (
     <Switch>
       <PublicRoute path="/login"><UserLogin /></PublicRoute>

@@ -16,11 +16,11 @@ interface NotificationContextInterface {
 
 const NotificationContext = createContext({} as NotificationContextInterface);
 
-export function useNotification() {
+export function useNotification(): NotificationContextInterface {
   return useContext(NotificationContext);
 }
 
-function NotificationProvider(props: NotificationProviderProps) {
+function NotificationProvider(props: NotificationProviderProps): JSX.Element {
   const initialValue: Notification = {message: '', type: ''};
 
   const [notification, setNotification] = useState(initialValue);

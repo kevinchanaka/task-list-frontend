@@ -1,7 +1,10 @@
 // Code obtained from https://usehooks.com/useLocalStorage/
 import {useState} from 'react';
 
-function useLocalStorage<T>(key: string, initialValue: T) {
+type UseLocalStorageReturn<T> = readonly [T, (value: T) => void]
+
+function useLocalStorage<T>(key: string, initialValue: T):
+  UseLocalStorageReturn<T> {
   const [storedValue, setStoredValue] = useState<T>(() => {
     try {
       const item = window.localStorage.getItem(key);

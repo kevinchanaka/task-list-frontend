@@ -3,7 +3,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import {useAuth} from '../context/Auth';
 
-function Header() {
+function Header(): JSX.Element {
   const {isLoggedIn, logoutUser} = useAuth();
 
   return (

@@ -1,7 +1,7 @@
 import {useNotification} from '../context/Notification';
 import Alert from 'react-bootstrap/Alert';
 
-function NotificationBar() {
+function NotificationBar(): JSX.Element {
   const {notification, clearNotification} = useNotification();
 
   return (
