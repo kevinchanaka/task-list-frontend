@@ -1,4 +1,4 @@
-export let API_PATH;
+export let API_PATH : string;
 
 if (process.env.NODE_ENV == 'development' || process.env.NODE_ENV == 'test') {
   API_PATH = ''; // relying on proxy setting

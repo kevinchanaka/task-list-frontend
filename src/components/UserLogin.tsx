@@ -2,25 +2,26 @@ import {useAuth} from '../context/Auth';
 import {useHistory} from 'react-router-dom';
 import {useNotification} from '../context/Notification';
 import UserLoginForm from '../forms/UserLoginForm';
+import {LoginUserRequest} from '../api';
 
-function UserLogin(props) {
+function UserLogin(): JSX.Element {
   const {loginUser} = useAuth();
   const {addFailure} = useNotification();
   const history = useHistory();
 
-  async function userLogin(credentials) {
+  async function handleUserLogin(credentials: LoginUserRequest) {
     const res = await loginUser(credentials.email, credentials.password);
-    if (!res.error) {
-      history.push('/');
-    } else {
+    if ('error' in res) {
       addFailure(res.error);
+    } else {
+      history.push('/');
     }
   }
 
   return (
     <div className="ml-5 mr-5 mt-3">
       <h3>User Login</h3>
-      <UserLoginForm onSubmit={userLogin} />
+      <UserLoginForm onSubmit={handleUserLogin} />
     </div>
   );
 }

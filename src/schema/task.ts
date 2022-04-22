@@ -1,5 +1,5 @@
-const {NAME_LENGTH, DEFAULT_LENGTH} = require('../config');
-const Joi = require('joi');
+import {NAME_LENGTH, DEFAULT_LENGTH} from '../config';
+import Joi from 'joi';
 
 const task = Joi.object({
   name: Joi.string()

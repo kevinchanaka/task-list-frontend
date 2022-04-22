@@ -1,8 +1,12 @@
 import {useAuth} from '../context/Auth';
 import React from 'react';
-import {Redirect, Route} from 'react-router-dom';
+import {Redirect, Route, RouteProps} from 'react-router-dom';
 
-function PrivateRoute({children, ...rest}) {
+interface PrivateRouteProps extends RouteProps {
+  children: React.ReactElement
+}
+
+function PrivateRoute({children, ...rest}: PrivateRouteProps): JSX.Element {
   const {isLoggedIn} = useAuth();
   return (
     <React.Fragment>

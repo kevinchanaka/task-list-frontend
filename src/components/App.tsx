@@ -6,7 +6,7 @@ import AppRouter from './AppRouter';
 import Container from 'react-bootstrap/Container';
 import {BrowserRouter as Router} from 'react-router-dom';
 
-function App() {
+function App(): JSX.Element {
   return (
     <Router>
       <NotificationProvider>

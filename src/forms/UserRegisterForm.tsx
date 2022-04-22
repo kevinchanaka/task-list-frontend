@@ -4,8 +4,14 @@ import Button from 'react-bootstrap/Button';
 import {useNotification} from '../context/Notification';
 import {userRegisterSchema} from '../schema/user';
 import {Link} from 'react-router-dom';
+import {FormControlElement} from '../interfaces';
+import {RegisterUserRequest} from '../api';
 
-function UserRegisterForm(props) {
+interface UserRegisterFormProps {
+  onSubmit: (credentials: RegisterUserRequest) => Promise<void>
+}
+
+function UserRegisterForm(props: UserRegisterFormProps): JSX.Element {
   const [credentials, setCredentials] = useState(() => {
     return {
       name: '',
@@ -16,13 +22,13 @@ function UserRegisterForm(props) {
   });
   const {addFailure} = useNotification();
 
-  function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<FormControlElement>) {
     setCredentials((prevState) => {
       return {...prevState, [event.target.name]: event.target.value};
     });
   }
 
-  async function handleOnSubmit(event) {
+  async function handleOnSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (credentials.password != credentials.passwordRepeat) {
       addFailure('Passwords do not match');

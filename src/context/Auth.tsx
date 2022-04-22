@@ -1,16 +1,37 @@
-import {createContext, useContext, useEffect} from 'react';
+import React, {createContext, useContext, useEffect} from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
-import {UserAPI, request} from '../api';
+import {UserAPI, request, RegisterUserResponse,
+  LoginUserResponse} from '../api';
 import {useNotification} from './Notification';
 
-const AuthContext = createContext();
+interface UserState {
+  email: string,
+  id: string,
+  name: string,
+}
 
-export function useAuth() {
+interface AuthProviderProps {
+  children: React.ReactElement
+}
+
+interface AuthContextInterface {
+  registerUser: (name: string, email: string, password: string) =>
+    Promise<RegisterUserResponse | {error: string;}>
+  loginUser: (email: string, password: string) =>
+    Promise<LoginUserResponse | {error: string;}>
+  logoutUser: () => void
+  isLoggedIn: () => boolean
+}
+
+const AuthContext = createContext({} as AuthContextInterface);
+
+export function useAuth(): AuthContextInterface {
   return useContext(AuthContext);
 }
 
-function AuthProvider(props) {
-  const [user, setUser] = useLocalStorage('user', {});
+function AuthProvider(props: AuthProviderProps): JSX.Element {
+  const initialValue: UserState = {email: '', id: '', name: ''};
+  const [user, setUser] = useLocalStorage<UserState>('user', initialValue);
   const {addSuccess, addFailure} = useNotification();
 
   useEffect(() => {
@@ -33,7 +54,7 @@ function AuthProvider(props) {
           retVal = request.request(error.config);
         } catch (error) {
           retVal = Promise.reject(error);
-          setUser({});
+          setUser(initialValue);
           addFailure('Session expired, please login again');
         }
 
@@ -44,7 +65,7 @@ function AuthProvider(props) {
     initInterceptor();
   }, []);
 
-  async function registerUser(name, email, password) {
+  async function registerUser(name: string, email: string, password: string) {
     const res = await UserAPI.registerUser({
       name: name,
       email: email,
@@ -53,12 +74,12 @@ function AuthProvider(props) {
     return res;
   }
 
-  async function loginUser(email, password) {
+  async function loginUser(email: string, password: string) {
     const res = await UserAPI.loginUser({
       email: email,
       password: password,
     });
-    if (!res.error) {
+    if (!('error' in res)) {
       setUser({
         email: res.user.email,
         id: res.user.id,
@@ -70,15 +91,15 @@ function AuthProvider(props) {
 
   async function logoutUser() {
     await UserAPI.logoutUser();
-    setUser({});
+    setUser(initialValue);
     addSuccess('Logout successful');
   }
 
   function isLoggedIn() {
-    if (Object.keys(user).length != 0) {
-      return true;
+    if (user.email == '' || user.name == '' || user.id == '') {
+      return false;
     }
-    return false;
+    return true;
   }
 
   return (
