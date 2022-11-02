@@ -2,13 +2,27 @@ import {useState} from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import {useNotification} from '../context/Notification';
-import {userRegisterSchema} from '../schema/user';
 import {Link} from 'react-router-dom';
 import {FormControlElement} from '../interfaces';
-import {RegisterUserRequest} from '../api';
+import {RegisterUserReq} from '../api/user';
+import {NAME_LENGTH, DEFAULT_LENGTH} from '../config';
+import Joi from 'joi';
+
+const userRegisterSchema = Joi.object({
+  name: Joi.string()
+    .required()
+    .max(NAME_LENGTH),
+  password: Joi.string()
+    .required()
+    .max(DEFAULT_LENGTH),
+  email: Joi.string()
+    .required()
+    .email({tlds: {allow: false}})
+    .max(NAME_LENGTH),
+});
 
 interface UserRegisterFormProps {
-  onSubmit: (credentials: RegisterUserRequest) => Promise<void>
+  onSubmit: (credentials: RegisterUserReq) => Promise<void>
 }
 
 function UserRegisterForm(props: UserRegisterFormProps): JSX.Element {

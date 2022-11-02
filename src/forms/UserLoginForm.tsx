@@ -1,14 +1,25 @@
 import React, {useState} from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import {userLoginSchema} from '../schema/user';
 import {useNotification} from '../context/Notification';
 import {Link} from 'react-router-dom';
 import {FormControlElement} from '../interfaces';
-import {LoginUserRequest} from '../api';
+import {LoginUserReq} from '../api/user';
+import {NAME_LENGTH, DEFAULT_LENGTH} from '../config';
+import Joi from 'joi';
+
+const userLoginSchema = Joi.object({
+  password: Joi.string()
+    .required()
+    .max(DEFAULT_LENGTH),
+  email: Joi.string()
+    .required()
+    .email({tlds: {allow: false}})
+    .max(NAME_LENGTH),
+});
 
 interface UserLoginFormProps {
-  onSubmit: (credentials: LoginUserRequest) => Promise<void>
+  onSubmit: (credentials: LoginUserReq) => Promise<void>
 }
 
 function UserLoginForm(props: UserLoginFormProps): JSX.Element {

@@ -20,9 +20,21 @@
         "@typescript-eslint"
     ],
     "rules": {
-        "react/react-in-jsx-scope": 0,
-        "require-jsdoc": 0,
-        "react/prop-types": 0
+        "react/react-in-jsx-scope": "off",
+        "require-jsdoc": "off",
+        "react/prop-types": "off",
+        "max-len": [
+            "error",
+            {
+                "code": 88
+            }
+        ],
+        "indent": [
+            "error",
+            2
+        ]
     },
-    "ignorePatterns": ["src/react-app-env.d.ts"]
+    "ignorePatterns": [
+        "src/react-app-env.d.ts"
+    ]
 }

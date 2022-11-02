@@ -1,34 +1,32 @@
 import React, {useState} from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import taskSchema from '../schema/task';
 import {useNotification} from '../context/Notification';
-import {Task} from '../api';
+import {CreateTaskReq} from '../api/task';
 import {FormControlElement} from '../interfaces';
+import {NAME_LENGTH, DEFAULT_LENGTH} from '../config';
+import Joi from 'joi';
+
+const taskAddSchema = Joi.object({
+  name: Joi.string()
+    .required()
+    .max(NAME_LENGTH),
+  description: Joi.string()
+    .required()
+    .allow('')
+    .max(DEFAULT_LENGTH),
+});
+
 
 interface TaskFormProps {
-  task?: Task
-  onSubmit: (task: Task) => Promise<void>
+  onSubmit: (task: CreateTaskReq) => Promise<void>
 }
 
-function TaskForm(props: TaskFormProps): JSX.Element {
-  const [task, setTask] = useState(() => {
-    let taskData;
-    if (props.task) {
-      taskData = props.task;
-    } else {
-      taskData = {
-        name: '',
-        description: '',
-      };
-    }
-    return taskData;
-  });
+function TaskAddForm(props: TaskFormProps): JSX.Element {
+  const [task, setTask] = useState({name: '', description: ''});
   const {addFailure} = useNotification();
 
   function handleChange(event: React.ChangeEvent<FormControlElement>) {
-    // should do basic data validation here if required
-    // e.g. prevent text from being entered into number field
     setTask((prevState) => {
       return {...prevState, [event.target.name]: event.target.value};
     });
@@ -36,7 +34,7 @@ function TaskForm(props: TaskFormProps): JSX.Element {
 
   async function handleOnSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const {error} = taskSchema.validate(task);
+    const {error} = taskAddSchema.validate(task);
     if (error) {
       addFailure(error.message);
     } else {
@@ -59,7 +57,7 @@ function TaskForm(props: TaskFormProps): JSX.Element {
             value={task.description} onChange={handleChange} />
         </Form.Group>
         <Button variant="primary" type="submit">
-        Submit
+          Submit
         </Button>
       </Form>
     </div>
@@ -67,4 +65,4 @@ function TaskForm(props: TaskFormProps): JSX.Element {
 }
 
 
-export default TaskForm;
+export default TaskAddForm;
