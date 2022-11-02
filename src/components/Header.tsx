@@ -14,15 +14,15 @@ function Header(): JSX.Element {
         </Navbar.Brand>
         <Nav className="mr-auto">
           {isLoggedIn() ?
-          <>
-            <Nav.Link as={Link} to="/">List Tasks</Nav.Link>
-            <Nav.Link as={Link} to="/add-task">Add Task</Nav.Link>
-            <Nav.Link><div onClick={logoutUser}>Logout</div></Nav.Link>
-          </> :
-          <>
-            <Nav.Link as={Link} to="/login">Login</Nav.Link>
-            <Nav.Link as={Link} to="/register">Register</Nav.Link>
-          </>
+            <>
+              <Nav.Link as={Link} to="/">List Tasks</Nav.Link>
+              <Nav.Link as={Link} to="/add-task">Add Task</Nav.Link>
+              <Nav.Link><div onClick={logoutUser}>Logout</div></Nav.Link>
+            </> :
+            <>
+              <Nav.Link as={Link} to="/login">Login</Nav.Link>
+              <Nav.Link as={Link} to="/register">Register</Nav.Link>
+            </>
           }
         </Nav>
       </Navbar>

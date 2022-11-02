@@ -1,6 +1,13 @@
 import React, {
-  createContext, useState, useContext, SetStateAction} from 'react';
-import {Notification} from '../interfaces';
+  createContext, useState, useContext, SetStateAction,
+} from 'react';
+
+type NotificationType = 'success' | 'danger' | ''
+
+interface Notification {
+    message: string,
+    type: NotificationType,
+}
 
 interface NotificationProviderProps {
   children: React.ReactElement

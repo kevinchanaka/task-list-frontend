@@ -1,5 +1,5 @@
-import TaskForm from '../forms/TaskForm';
-import {TaskAPI, Task} from '../api';
+import TaskAddForm from '../forms/TaskAddForm';
+import {TaskAPI, CreateTaskReq} from '../api/task';
 import {useHistory} from 'react-router-dom';
 import {useNotification} from '../context/Notification';
 
@@ -7,7 +7,7 @@ function TaskAdd(): JSX.Element {
   const history = useHistory();
   const {addSuccess, addFailure} = useNotification();
 
-  async function handleCreateTask(task: Task) {
+  async function handleCreateTask(task: CreateTaskReq) {
     const res = await TaskAPI.createTask(task);
     if ('error' in res) {
       addFailure(res.error);
@@ -20,7 +20,7 @@ function TaskAdd(): JSX.Element {
   return (
     <div className="ml-5 mr-5 mt-3">
       <h3>Add Task</h3>
-      <TaskForm onSubmit={handleCreateTask} />
+      <TaskAddForm onSubmit={handleCreateTask} />
     </div>
   );
 }

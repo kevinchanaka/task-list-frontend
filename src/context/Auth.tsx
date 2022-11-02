@@ -1,8 +1,12 @@
-import React, {createContext, useContext, useEffect} from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
 import useLocalStorage from '../hooks/useLocalStorage';
-import {UserAPI, request, RegisterUserResponse,
-  LoginUserResponse} from '../api';
+import {
+  UserAPI, RegisterUserRes,
+  LoginUserRes,
+} from '../api/user';
+import {request} from '../api';
 import {useNotification} from './Notification';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 interface UserState {
   email: string,
@@ -16,9 +20,9 @@ interface AuthProviderProps {
 
 interface AuthContextInterface {
   registerUser: (name: string, email: string, password: string) =>
-    Promise<RegisterUserResponse | {error: string;}>
+    Promise<RegisterUserRes | {error: string;}>
   loginUser: (email: string, password: string) =>
-    Promise<LoginUserResponse | {error: string;}>
+    Promise<LoginUserRes | {error: string;}>
   logoutUser: () => void
   isLoggedIn: () => boolean
 }
@@ -32,6 +36,7 @@ export function useAuth(): AuthContextInterface {
 function AuthProvider(props: AuthProviderProps): JSX.Element {
   const initialValue: UserState = {email: '', id: '', name: ''};
   const [user, setUser] = useLocalStorage<UserState>('user', initialValue);
+  const [configured, setConfigured] = useState(false);
   const {addSuccess, addFailure} = useNotification();
 
   useEffect(() => {
@@ -63,6 +68,7 @@ function AuthProvider(props: AuthProviderProps): JSX.Element {
       });
     }
     initInterceptor();
+    setConfigured(true);
   }, []);
 
   async function registerUser(name: string, email: string, password: string) {
@@ -103,14 +109,16 @@ function AuthProvider(props: AuthProviderProps): JSX.Element {
   }
 
   return (
-    <AuthContext.Provider value={{
-      registerUser,
-      loginUser,
-      logoutUser,
-      isLoggedIn,
-    }}>
-      {props.children}
-    </AuthContext.Provider>
+    <LoadingSpinner loaded={configured} error={undefined}>
+      <AuthContext.Provider value={{
+        registerUser,
+        loginUser,
+        logoutUser,
+        isLoggedIn,
+      }}>
+        {props.children}
+      </AuthContext.Provider>
+    </LoadingSpinner>
   );
 }
 

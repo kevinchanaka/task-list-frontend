@@ -3,15 +3,15 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import {useHistory} from 'react-router-dom';
 import React, {useState} from 'react';
-import {TaskAPI, TaskWithId, Task} from '../api';
+import {TaskAPI, Task, TaskHistory} from '../api/task';
 import {useNotification} from '../context/Notification';
 
 interface TaskCardProps {
-  task: TaskWithId
+  task: Task
 }
 
 function TaskCard(props: TaskCardProps): JSX.Element {
-  const history = useHistory<Task>();
+  const history = useHistory<TaskHistory>();
   const {addSuccess, addFailure} = useNotification();
   const [deleted, setDeleted] = useState(false);
 
@@ -21,16 +21,20 @@ function TaskCard(props: TaskCardProps): JSX.Element {
     history.push(`tasks/${taskId}`);
   }
 
-  function handleEditClick(task: TaskWithId) {
-    const {id, ...state} = task;
+  function handleEditClick(task: Task) {
+    const {id, name, description, completed} = task;
     history.push({
       pathname: `/edit-task/${id}`,
-      state: state,
+      state: {
+        name: name,
+        description: description,
+        completed: completed,
+      },
     });
   }
 
   async function deleteTask(taskId: string) {
-    const res = await TaskAPI.removeTask({id: taskId});
+    const res = await TaskAPI.removeTask(taskId);
     if ('error' in res) {
       addFailure(res.error);
     } else {
@@ -69,6 +73,7 @@ function TaskCard(props: TaskCardProps): JSX.Element {
                 <i className="bi bi-trash"></i>
               </Button>
             </div>
+            <p style={{whiteSpace: 'pre-line'}}>{props.task.description}</p>
           </Card.Body>
         </Card>
       </Col>

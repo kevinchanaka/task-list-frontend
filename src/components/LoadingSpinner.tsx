@@ -7,7 +7,7 @@ interface LoadingSpinnerProps {
   children: React.ReactElement
 }
 
-const crossStyle = {
+const crossStyle: React.CSSProperties = {
   fontSize: '2rem',
   display: 'inline',
 };

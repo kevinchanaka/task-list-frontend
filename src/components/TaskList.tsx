@@ -1,4 +1,4 @@
-import {TaskAPI, TaskWithId} from '../api';
+import {TaskAPI, Task} from '../api/task';
 import Row from 'react-bootstrap/Row';
 import {Link} from 'react-router-dom';
 import useDataLoader from '../hooks/useDataLoader';
@@ -14,7 +14,7 @@ function TaskList(): JSX.Element {
       <LoadingSpinner loaded={loaded} error={error}>
         {data && data.tasks && data.tasks.length > 0 ?
           <Row xs={1} md={2} className="g-4">
-            {data.tasks.map((data: TaskWithId) => {
+            {data.tasks.map((data: Task) => {
               return (
                 <TaskCard key={data.id} task={data} />
               );
