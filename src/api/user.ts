@@ -1,5 +1,5 @@
+/* eslint @typescript-eslint/explicit-module-boundary-types: off */
 import {handler, request} from '.';
-import {AxiosResponse} from 'axios';
 
 export interface LoginUserReq {
   email: string,
@@ -36,22 +36,20 @@ interface LogoutUserRes {
 }
 
 export const UserAPI = {
-  registerUser: async (user: RegisterUserReq):
-    Promise<{error: string;} | RegisterUserRes> =>
+  registerUser: async (user: RegisterUserReq) =>
     await handler<RegisterUserRes>({
       method: 'post',
       url: '/users/register',
       data: user,
     }),
-  loginUser: async (credentials: LoginUserReq):
-    Promise<{error: string;} | LoginUserRes> =>
+  loginUser: async (credentials: LoginUserReq) =>
     await handler<LoginUserRes>({
       method: 'post',
       url: '/users/login',
       data: credentials,
     }),
-  logoutUser: async (): Promise<{error: string;} | LogoutUserRes> =>
+  logoutUser: async () =>
     await handler<LogoutUserRes>({method: 'post', url: '/users/logout'}),
-  getAccessToken: async (): Promise<AxiosResponse<Record<string, never>>> =>
+  getAccessToken: async () =>
     await request.post<Record<string, never>>('/users/token'),
 };

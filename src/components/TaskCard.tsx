@@ -5,6 +5,7 @@ import {useHistory} from 'react-router-dom';
 import React, {useState} from 'react';
 import {TaskAPI, Task, TaskHistory} from '../api/task';
 import {useNotification} from '../context/Notification';
+import LabelIconList from './LabelIconList';
 
 interface TaskCardProps {
   task: Task
@@ -22,13 +23,14 @@ function TaskCard(props: TaskCardProps): JSX.Element {
   }
 
   function handleEditClick(task: Task) {
-    const {id, name, description, completed} = task;
+    const {id, name, description, completed, labels} = task;
     history.push({
       pathname: `/edit-task/${id}`,
       state: {
         name: name,
         description: description,
         completed: completed,
+        labels: labels,
       },
     });
   }
@@ -74,6 +76,7 @@ function TaskCard(props: TaskCardProps): JSX.Element {
               </Button>
             </div>
             <p style={{whiteSpace: 'pre-line'}}>{props.task.description}</p>
+            <LabelIconList labels={props.task.labels} />
           </Card.Body>
         </Card>
       </Col>

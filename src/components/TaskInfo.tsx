@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import useDataLoader from '../hooks/useDataLoader';
 import LoadingSpinner from './LoadingSpinner';
 import {useNotification} from '../context/Notification';
+import LabelIconList from './LabelIconList';
 
 function TaskInfo(): JSX.Element {
   const {id} = useParams<TaskParams>();
@@ -24,10 +25,15 @@ function TaskInfo(): JSX.Element {
 
   async function editTask() {
     if (data) {
-      const {id, ...state} = data.task;
+      const {id, name, description, completed, labels} = data.task;
       history.push({
         pathname: `/edit-task/${id}`,
-        state: state,
+        state: {
+          name: name,
+          description: description,
+          completed: completed,
+          labels: labels,
+        },
       });
     }
   }
@@ -58,6 +64,10 @@ function TaskInfo(): JSX.Element {
             <span className="font-weight-bold">
               Updated at: </span>{data.task.updatedAt}
           </p>
+          <p>
+            <span className='font-weight-bold'>Labels: </span>
+          </p>
+          <LabelIconList labels={data.task.labels} /><br />
           <Button variant="primary" onClick={editTask} className="mr-2">
             Edit Task
           </Button>

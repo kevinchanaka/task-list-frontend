@@ -1,4 +1,11 @@
+/* eslint @typescript-eslint/explicit-module-boundary-types: off */
 import {handler} from '.';
+
+export interface Label {
+  id: string,
+  name: string,
+  colour: string
+}
 
 export interface Task {
   id: string,
@@ -7,34 +14,18 @@ export interface Task {
   completed: boolean,
   createdAt: string,
   updatedAt: string,
-}
-
-export interface Id { // rename to TaskParams
-  id: string
+  labels: Label[]
 }
 
 export interface TaskParams {
   id: string
 }
 
-export interface TaskWithoutId { // rename to TaskHistory
-  name: string,
-  description: string,
-  completed: boolean,
-  createdAt: string,
-  updatedAt: string,
-}
-
 export interface TaskHistory {
   name: string,
   description: string,
-  completed: boolean
-}
-
-export interface TaskEditFormFields {
-  name: string
-  description: string,
-  completed: boolean
+  completed: boolean,
+  labels: Label[]
 }
 
 interface GetTasksRes {
@@ -72,19 +63,24 @@ interface RemoveTaskRes {
 }
 
 export const TaskAPI = {
-  getTasks: async (): Promise<{error: string;} | GetTasksRes> =>
+  getTasks: async () =>
     await handler<GetTasksRes>({method: 'get', url: '/tasks'}),
-  getTask: async (id: string): Promise<{error: string;} | GetTaskRes> =>
+  getTask: async (id: string) =>
     await handler<GetTaskRes>({method: 'get', url: `/tasks/${id}`}),
-  createTask: async (task: CreateTaskReq): Promise<{error: string;} | CreateTaskRes> =>
+  createTask: async (task: CreateTaskReq) =>
     await handler<CreateTaskRes>({method: 'post', url: '/tasks', data: task}),
-  modifyTask: async ({id, ...task}: ModifyTaskReq):
-    Promise<{error: string;} | ModifyTaskRes> =>
+  modifyTask: async ({id, ...task}: ModifyTaskReq) =>
     await handler<ModifyTaskRes>({
       method: 'put',
       url: `/tasks/${id}`,
       data: task,
     }),
-  removeTask: async (id: string): Promise<{error: string;} | RemoveTaskRes> =>
+  removeTask: async (id: string) =>
     await handler<RemoveTaskRes>({method: 'delete', url: `/tasks/${id}`}),
+  addLabels: async (id: string, labels: string[]) =>
+    await handler<RemoveTaskRes>(
+      {method: 'post', url: `/tasks/${id}/attach`, data: {labels: labels}}),
+  removeLabels: async (id: string, labels: string[]) =>
+    await handler<RemoveTaskRes>(
+      {method: 'post', url: `/tasks/${id}/detach`, data: {labels: labels}}),
 };
