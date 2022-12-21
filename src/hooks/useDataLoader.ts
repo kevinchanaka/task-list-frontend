@@ -20,6 +20,7 @@ function useDataLoader<T>(callback: Callback<T>): UseDataLoaderReturn<T> {
       const res = await callback();
 
       if (isMounted && res) {
+        // @ts-ignore Disabling TS here due to potential bug https://github.com/microsoft/TypeScript/issues/51007
         if ('error' in res) {
           setError(res.error);
           addFailure(res.error);
