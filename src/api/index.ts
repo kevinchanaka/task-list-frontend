@@ -34,3 +34,30 @@ export async function handler<T>(
     return {error: message};
   }
 }
+/* parameters of interest
+url
+method
+body
+params
+*/
+
+// interface RequestOpts {
+//   url: string,
+//   method: string,
+//   body: any
+//   params: any
+// }
+
+// export async function requestHandler({
+//   url,
+//   method,
+//   body,
+//   params,
+// }: RequestOpts)
+
+
+// const customBaseQuery: BaseQueryFn<> = async (args, api, extraOptions) => {
+
+// };
+
+

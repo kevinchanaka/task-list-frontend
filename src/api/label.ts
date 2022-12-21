@@ -13,7 +13,7 @@ export interface LabelParams {
   id: string
 }
 
-interface GetLabelsRes {
+export interface GetLabelsRes {
   labels: Label[]
 }
 

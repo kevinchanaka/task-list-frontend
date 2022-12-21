@@ -18,6 +18,7 @@ function Header(): JSX.Element {
               <Nav.Link as={Link} to="/">List Tasks</Nav.Link>
               <Nav.Link as={Link} to="/add-task">Add Task</Nav.Link>
               <Nav.Link as={Link} to="/labels">Labels</Nav.Link>
+              <Nav.Link as={Link} to="/add-label">Add Label</Nav.Link>
               <Nav.Link><div onClick={logoutUser}>Logout</div></Nav.Link>
             </> :
             <>
