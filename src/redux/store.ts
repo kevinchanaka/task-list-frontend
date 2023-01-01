@@ -1,17 +1,18 @@
-import {configureStore} from '@reduxjs/toolkit';
-import notificationsReducer from './notifications';
-import labelsReducer from './labels';
-import {apiSlice} from './api';
+import { configureStore, combineReducers } from "@reduxjs/toolkit";
+import notificationsReducer from "./notifications";
+import authReducer from "redux/auth";
+import { apiSlice } from "redux/api";
 
-export const store = configureStore({
-  reducer: {
-    notifications: notificationsReducer,
-    labels: labelsReducer,
-    api: apiSlice.reducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(apiSlice.middleware),
+const rootReducer = combineReducers({
+  notifications: notificationsReducer,
+  auth: authReducer,
+  api: apiSlice.reducer,
 });
 
-export type RootState = ReturnType<typeof store.getState>
-export type AppDispatch = typeof store.dispatch
+export const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(apiSlice.middleware),
+});
+
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppDispatch = typeof store.dispatch;

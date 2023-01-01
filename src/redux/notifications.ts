@@ -1,23 +1,23 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {nanoid} from '@reduxjs/toolkit';
-import type {PayloadAction} from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
+import { nanoid } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface Notification {
-  message: string,
-  type: string
-  id: string,
+  message: string;
+  type: string;
+  id: string;
 }
 
 const initialState: Notification[] = [];
 
 const notificationsSlice = createSlice({
-  name: 'notifications',
+  name: "notifications",
   initialState,
   reducers: {
     addSuccess: {
       prepare(message: string) {
         return {
-          payload: {id: nanoid(), type: 'success', message},
+          payload: { id: nanoid(), type: "success", message },
         };
       },
       reducer(state, action: PayloadAction<Notification>) {
@@ -27,7 +27,7 @@ const notificationsSlice = createSlice({
     addFailure: {
       prepare(message: string) {
         return {
-          payload: {id: nanoid(), type: 'danger', message},
+          payload: { id: nanoid(), type: "danger", message },
         };
       },
       reducer(state, action: PayloadAction<Notification>) {
@@ -40,7 +40,5 @@ const notificationsSlice = createSlice({
   },
 });
 
-export const {addSuccess, addFailure, removeNotification} = notificationsSlice.actions;
+export const { addSuccess, addFailure, removeNotification } = notificationsSlice.actions;
 export default notificationsSlice.reducer;
-
-// export const notifications = (state) => state.notifications;
