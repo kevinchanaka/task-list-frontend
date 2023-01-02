@@ -1,37 +1,20 @@
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import LabelBox from "components/label/LabelBox";
-import Button from "react-bootstrap/Button";
-import { useGetLabelQuery, useDeleteLabelMutation } from "redux/api";
-import Spinner from "react-bootstrap/Spinner";
+import { useGetLabelQuery } from "redux/api";
+import LabelDeleteButton from "components/label/LabelDeleteButton";
+import LabelEditButton from "components/label/LabelEditButton";
+import LoadingSpinner from "components/common/LoadingSpinner";
 
 export default function LabelInfo() {
   const { id } = useParams<{ id: string }>();
-  const history = useHistory();
   const { data, isLoading } = useGetLabelQuery(id);
-  const [deleteLabel] = useDeleteLabelMutation();
+  let component = <></>;
 
-  function handleEditClick() {
-    if (data) {
-      history.push(`/edit-label/${id}`, {
-        name: data.label.name,
-        colour: data.label.colour,
-      });
-    }
-  }
-
-  async function handleDeleteClick() {
-    const res = await deleteLabel(id);
-    if ("data" in res) {
-      history.push("/labels");
-    }
-  }
-
-  if (isLoading) return <Spinner animation="border" />;
+  if (isLoading) component = <LoadingSpinner />;
 
   if (data) {
-    return (
-      <div className="ml-5 mr-5 mt-3">
-        <h2>Label Information</h2>
+    component = (
+      <>
         <p>
           <b>ID: </b>
           {data.label.id}
@@ -51,15 +34,18 @@ export default function LabelInfo() {
           <b>Updated at: </b>
           {data.label.updatedAt}
         </p>
-        <Button className="mr-2" onClick={handleEditClick}>
-          Edit Label
-        </Button>
-        <Button variant="danger" onClick={handleDeleteClick}>
+        <LabelEditButton label={data.label}>Edit Label</LabelEditButton>
+        <LabelDeleteButton id={data.label.id} redirect="/labels">
           Delete Label
-        </Button>
-      </div>
+        </LabelDeleteButton>
+      </>
     );
   }
 
-  return <div></div>;
+  return (
+    <>
+      <h2>Label Information</h2>
+      {component}
+    </>
+  );
 }

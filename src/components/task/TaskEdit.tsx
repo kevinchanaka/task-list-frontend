@@ -1,7 +1,7 @@
 import TaskEditForm from "components/forms/TaskEditForm";
 import { TaskHistory } from "api/interfaces";
 import { useHistory, useParams } from "react-router-dom";
-import Spinner from "react-bootstrap/Spinner";
+import LoadingSpinner from "components/common/LoadingSpinner";
 import {
   useUpdateTaskMutation,
   useAddLabelsMutation,
@@ -18,11 +18,11 @@ interface Task {
 export default function TaskEdit() {
   const history = useHistory<TaskHistory>();
   const { id } = useParams<{ id: string }>();
-
   const { data, isLoading } = useGetLabelsQuery();
   const [updateTask] = useUpdateTaskMutation();
   const [addLabels] = useAddLabelsMutation();
   const [removeLabels] = useRemoveLabelsMutation();
+  let component = <></>;
 
   async function handleModifyTask(task: Task, labelsToAdd: string[], labelsToRemove: string[]) {
     const taskRes = await updateTask({ id, ...task });
@@ -39,10 +39,8 @@ export default function TaskEdit() {
     history.push("/");
   }
 
-  let component = <></>;
-
   if (isLoading) {
-    component = <Spinner animation="border" />;
+    component = <LoadingSpinner />;
   } else if (data) {
     component = (
       <TaskEditForm
@@ -54,9 +52,9 @@ export default function TaskEdit() {
   }
 
   return (
-    <div className="ml-5 mr-5 mt-3">
+    <>
       <h3>Edit Task</h3>
       {component}
-    </div>
+    </>
   );
 }

@@ -19,9 +19,9 @@ export default function UserLogin() {
   }
 
   return (
-    <div className="ml-5 mr-5 mt-3">
+    <>
       <h3>User Login</h3>
       <UserLoginForm onSubmit={handleUserLogin} />
-    </div>
+    </>
   );
 }

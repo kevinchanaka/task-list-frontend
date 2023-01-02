@@ -23,7 +23,7 @@ export default function LabelForm(props: LabelFormProps) {
     if (props.label) {
       return props.label;
     }
-    return { name: "", colour: "" };
+    return { name: "", colour: "#000000" };
   });
   const dispatch = useAppDispatch();
 

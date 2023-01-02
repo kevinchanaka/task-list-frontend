@@ -15,9 +15,9 @@ export default function UserRegister() {
   }
 
   return (
-    <div className="ml-5 mr-5 mt-3">
+    <>
       <h3>User Registration</h3>
       <UserRegisterForm onSubmit={handleUserRegister} />
-    </div>
+    </>
   );
 }

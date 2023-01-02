@@ -15,9 +15,9 @@ export default function LabelAdd() {
   }
 
   return (
-    <div className="ml-5 mr-5 mt-3">
+    <>
       <h3>Add Label</h3>
       <LabelForm onSubmit={handleCreateLabel} />
-    </div>
+    </>
   );
 }
