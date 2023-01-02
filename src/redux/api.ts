@@ -11,8 +11,6 @@ import { ERROR_UNAUTHORIZED } from "config";
 const customBaseQuery: BaseQueryFn<RequestOpts, unknown, AppError> = async (args, api) => {
   const result = await apiClient.request({ ...args });
 
-  console.log(result);
-
   if ("error" in result && result.error.message === ERROR_UNAUTHORIZED) {
     // User's refresh token has expired, trigger logout
     api.dispatch(addFailure("Session expired, please login again"));
@@ -58,14 +56,20 @@ export const apiSlice = createApi({
         url: "/labels",
         method: "GET",
       }),
-      providesTags: ["Label"],
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.labels.map((item) => ({ type: "Label" as const, id: item.id })),
+              { type: "Label", id: "LIST" },
+            ]
+          : [{ type: "Label", id: "LIST" }],
     }),
     getLabel: builder.query<{ label: type.Label }, string>({
       query: (id) => ({
         url: `/labels/${id}`,
         method: "GET",
       }),
-      providesTags: ["Label"],
+      providesTags: (result, error, arg) => [{ type: "Label", id: arg }],
     }),
     createLabel: builder.mutation<type.LabelRes, type.CreateLabelReq>({
       query: (arg) => ({
@@ -73,7 +77,7 @@ export const apiSlice = createApi({
         method: "POST",
         data: arg,
       }),
-      invalidatesTags: ["Label"],
+      invalidatesTags: [{ type: "Label", id: "LIST" }],
     }),
     updateLabel: builder.mutation<type.LabelRes, type.UpdateLabelReq>({
       query: ({ id, ...label }) => ({
@@ -81,14 +85,14 @@ export const apiSlice = createApi({
         method: "put",
         data: label,
       }),
-      invalidatesTags: ["Label"],
+      invalidatesTags: (result, error, arg) => [{ type: "Label", id: arg.id }],
     }),
     deleteLabel: builder.mutation<{ message: string }, string>({
       query: (id) => ({
         url: `/labels/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Label"],
+      invalidatesTags: [{ type: "Label", id: "LIST" }],
     }),
     getTasks: builder.query<{ tasks: type.Task[] }, void>({
       query: () => ({
@@ -97,8 +101,11 @@ export const apiSlice = createApi({
       }),
       providesTags: (result) =>
         result
-          ? [...result.tasks.map((item) => ({ type: "Task" as const, id: item.id })), "Task"]
-          : ["Task"],
+          ? [
+              ...result.tasks.map((item) => ({ type: "Task" as const, id: item.id })),
+              { type: "Task", id: "LIST" },
+            ]
+          : [{ type: "Task", id: "LIST" }],
     }),
     getTask: builder.query<{ task: type.Task }, string>({
       query: (id) => ({
@@ -113,7 +120,7 @@ export const apiSlice = createApi({
         method: "POST",
         data: arg,
       }),
-      invalidatesTags: ["Task"],
+      invalidatesTags: [{ type: "Task", id: "LIST" }],
     }),
     updateTask: builder.mutation<{ task: type.Task; message: string }, type.UpdateTaskReq>({
       query: ({ id, ...task }) => ({
@@ -128,7 +135,7 @@ export const apiSlice = createApi({
         url: `/tasks/${id}`,
         method: "DELETE",
       }),
-      invalidatesTags: (result, error, arg) => [{ type: "Task", id: arg }],
+      invalidatesTags: [{ type: "Task", id: "LIST" }],
     }),
     addLabels: builder.mutation<{ message: string }, type.TaskLabelsReq>({
       query: ({ id, labels }) => ({

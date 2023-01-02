@@ -16,12 +16,12 @@ export default function LabelEdit() {
   }
 
   return (
-    <div className="ml-5 mr-5 mt-3">
+    <>
       <h3>Edit Label</h3>
       <LabelForm
         onSubmit={handleLabelSubmit}
         label={history.location.state ? { ...history.location.state } : undefined}
       />
-    </div>
+    </>
   );
 }

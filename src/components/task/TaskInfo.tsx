@@ -1,42 +1,17 @@
-import { useHistory, useParams } from "react-router-dom";
-import { TaskHistory } from "api/interfaces";
-import Button from "react-bootstrap/Button";
-import Spinner from "react-bootstrap/Spinner";
+import { useParams } from "react-router-dom";
+import LoadingSpinner from "components/common/LoadingSpinner";
 import LabelIconList from "components/label/LabelIconList";
-import { useGetTaskQuery, useDeleteTaskMutation } from "redux/api";
+import TaskDeleteButton from "components/task/TaskDeleteButton";
+import TaskEditButton from "components/task/TaskEditButton";
+import { useGetTaskQuery } from "redux/api";
 
 export default function TaskInfo() {
   const { id } = useParams<{ id: string }>();
-  const history = useHistory<TaskHistory>();
   const { data, isLoading } = useGetTaskQuery(id);
-  const [deleteTaskApi] = useDeleteTaskMutation();
-
-  async function deleteTask() {
-    const res = await deleteTaskApi(id);
-    if ("data" in res) {
-      history.push("/");
-    }
-  }
-
-  async function editTask() {
-    if (data) {
-      const { id, name, description, completed, labels } = data.task;
-      history.push({
-        pathname: `/edit-task/${id}`,
-        state: {
-          name: name,
-          description: description,
-          completed: completed,
-          labels: labels,
-        },
-      });
-    }
-  }
-
   let component = <></>;
 
   if (isLoading) {
-    component = <Spinner animation="border" />;
+    component = <LoadingSpinner />;
   } else if (data) {
     component = (
       <>
@@ -70,20 +45,18 @@ export default function TaskInfo() {
         </p>
         <LabelIconList labels={data.task.labels} />
         <br />
-        <Button variant="primary" onClick={editTask} className="mr-2">
-          Edit Task
-        </Button>
-        <Button variant="danger" onClick={deleteTask}>
+        <TaskEditButton task={data.task}>Edit Task</TaskEditButton>
+        <TaskDeleteButton id={id} redirect="/">
           Delete Task
-        </Button>
+        </TaskDeleteButton>
       </>
     );
   }
 
   return (
-    <div className="ml-5 mr-5 mt-3">
+    <>
       <h3>Task Information</h3>
       {component}
-    </div>
+    </>
   );
 }

@@ -15,7 +15,9 @@ export default function App() {
         <div style={{ minWidth: "100vw" }}>
           <Header />
           <NotificationBar />
-          <AppRouter />
+          <div className="ml-5 mr-5 mt-3">
+            <AppRouter />
+          </div>
         </div>
       </Container>
     </Router>
