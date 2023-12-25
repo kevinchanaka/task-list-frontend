@@ -7,6 +7,7 @@ export default function LabelBox(props: LabelBoxProps) {
   const style = {
     display: "inline-block",
     color: colour,
+    border: "1px"
   };
   return <i style={style} className="m-1 mr-2 bi bi-square-fill"></i>;
 }

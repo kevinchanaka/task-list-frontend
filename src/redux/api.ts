@@ -59,9 +59,9 @@ export const apiSlice = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.labels.map((item) => ({ type: "Label" as const, id: item.id })),
-              { type: "Label", id: "LIST" },
-            ]
+            ...result.labels.map((item) => ({ type: "Label" as const, id: item.id })),
+            { type: "Label", id: "LIST" },
+          ]
           : [{ type: "Label", id: "LIST" }],
     }),
     getLabel: builder.query<{ label: type.Label }, string>({
@@ -102,9 +102,9 @@ export const apiSlice = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.tasks.map((item) => ({ type: "Task" as const, id: item.id })),
-              { type: "Task", id: "LIST" },
-            ]
+            ...result.tasks.map((item) => ({ type: "Task" as const, id: item.id })),
+            { type: "Task", id: "LIST" },
+          ]
           : [{ type: "Task", id: "LIST" }],
     }),
     getTask: builder.query<{ task: type.Task }, string>({
@@ -139,17 +139,17 @@ export const apiSlice = createApi({
     }),
     addLabels: builder.mutation<{ message: string }, type.TaskLabelsReq>({
       query: ({ id, labels }) => ({
-        url: `/tasks/${id}/attach`,
+        url: `/tasks/attach`,
         method: "POST",
-        data: { labels },
+        data: { taskId: id, labelIds: labels },
       }),
       invalidatesTags: ["Task"],
     }),
     removeLabels: builder.mutation<{ message: string }, type.TaskLabelsReq>({
       query: ({ id, labels }) => ({
-        url: `/tasks${id}/detach`,
+        url: `/tasks/detach`,
         method: "POST",
-        data: labels,
+        data: { taskId: id, labelIds: labels },
       }),
       invalidatesTags: ["Task"],
     }),

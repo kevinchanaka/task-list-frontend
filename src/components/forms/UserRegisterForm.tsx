@@ -54,7 +54,7 @@ export default function UserRegisterForm(props: UserRegisterFormProps) {
     if (error) {
       dispatch(addFailure(error.message));
     } else {
-      await props.onSubmit(credentials);
+      await props.onSubmit(data);
     }
   }
 
