@@ -1,0 +1,18 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - echo "Installing packages"
+      - npm install
+  build:
+    commands:
+      - echo "Building docker image and pushing to ECR"
+      - aws ecr get-login-password --region ap-southeast-2 | docker login --username AWS --password-stdin ${ECR_REGISTRY}
+      - make build
+      - docker tag task-list-frontend:latest ${ECR_REPOSITORY_URI}:${CODEBUILD_RESOLVED_SOURCE_VERSION}
+      - docker push ${ECR_REPOSITORY_URI}:${CODEBUILD_RESOLVED_SOURCE_VERSION}
+
+artifacts:
+  files:
+    - "**/*"

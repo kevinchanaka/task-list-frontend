@@ -1,0 +1,15 @@
+version: 0.2
+       
+phases:
+  install:
+    commands:
+      - echo "Get EKS cluster version"
+      - CLUSTER_VERSION=`aws eks describe-cluster --name ${EKS_CLUSTER_NAME} | jq -r .cluster.version`
+      - echo "Installing required tools"
+      - curl -LO https://dl.k8s.io/release/v${CLUSTER_VERSION}.0/bin/linux/amd64/kubectl && chmod +x kubectl
+      - echo "Updating kubeconfig file"
+      - aws eks update-kubeconfig --name ${EKS_CLUSTER_NAME}
+  build:
+    commands:
+      - echo "Deploying manifest file"
+      - envsubst < files/manifest.yaml | kubectl apply -f -
